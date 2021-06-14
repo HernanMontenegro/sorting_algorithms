@@ -1,9 +1,7 @@
 #include "sort.h"
 #include <stdio.h>
 
-/* My linked list */
-void add_nodeint(indexlist_t **head, const int n);
-int search_in_llist(indexlist_t *head, const int idx);
+void quick_sort_3070(int *arr, size_t st, size_t ed);
 
 /**
  * quick_sort - quick sort sorting order
@@ -13,73 +11,42 @@ int search_in_llist(indexlist_t *head, const int idx);
 */
 void quick_sort(int *array, size_t size)
 {
-	int pivot, aux, i;
-	size_t bot, top = 0;
-	indexlist_t *locked_idx = NULL;
+	quick_sort_3070(array, 0, size - 1);
+}
 
-	if (!array || size == 0)
+void quick_sort_3070(int *arr, size_t st, size_t ed)
+{
+	int pivot, i, j, aux;
+
+	if (!arr)
 		return;
-	pivot = array[size - 1];
+	pivot = array[ed];
 
-	for (i = 0; i < size; i++)
+	for (; st < size; st++)
 	{
-		for (bot = 0; bot != size - 1; bot++, top++)
+		if (pivot >= array[st])
+			continue;
+		
+		while (ed >= 0)
 		{
-			if (pivot >= array[bot] || search_in_llist(locked_idx, bot) == 1)
+			if (st > ed)
+			{
+				aux = array[ed];
+				array[ed] = pivot;
+				array[size - 1] = aux;
+				break;
+			}
+			if (pivot < array[ed])
+			{
+				ed--;
 				continue;
-			/* pivot < array[bot] - Ahora si se viene lo chido */
-			top++;
-			/* Loopeo hasta encontrar un valor apto para swapear */
-			while (pivot < array[top] && top < size)
-				top++;
-			/* SWAP */
-			aux = array[bot];
-			array[bot] = array[top];
-			array[top] = aux;
-			bot = --top; /* -1 por el incremento del for */
+			}
+			aux = array[st];
+			array[st] = array[ed];
+			array[ed] = array[st];
+			break;
 		}
-		/* bot - 1 por el incremento al final del for*/
-		add_nodeint(&locked_idx, bot - 1);
-		print_array(array, size);
+		/* for avoid increment */
+		st--;
 	}
-}
-
-/**
-* add_nodeint - add new node at the begining
-* @head: the head node
-* @n: the int value to add
-* -------------------------------
-* Return: a new node
-*/
-void add_nodeint(indexlist_t **head, const int n)
-{
-	indexlist_t *new_one;
-
-	new_one = malloc(sizeof(indexlist_t));
-	if (!new_one)
-		return;
-	new_one->n = n;
-	new_one->next = (*head);
-
-	*head = new_one;
-}
-
-/**
- * search_in_llist - search an index in the linked list
- * @head: the head node
- * @n: the index to find
- * -------------------------------
- * Return: 1 if index was found, -1 if not
-*/
-int search_in_llist(indexlist_t *head, const int idx)
-{
-    if (!head)
-        return (-1);
-    while (head)
-    {
-        if (head->n == idx)
-            return (1);
-        head = head->next;
-    }
-    return (-1);
 }
