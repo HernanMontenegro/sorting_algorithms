@@ -1,77 +1,68 @@
 #include "sort.h"
-#include <stdio.h>
 
-void quick_sort_3070(int *arr, size_t st, size_t ed);
-size_t division(int *arr, size_t st, size_t up);
+void quick_sort_3070(int *arr, int lb, int up, size_t size);
+int partition(int *arr, int lb, int up, size_t size);
+
 
 /**
- * quick_sort - quick sort sorting order
- * @array: array to sort
- * @size: the size of the array
- * ------------------------------------
+* quick_sort - sort function using quick sort algoritmh
+* @array: array received
+* @size: size of array
 */
 void quick_sort(int *array, size_t size)
 {
-	quick_sort_3070(array, 0, size - 1);
+	quick_sort_3070(array, 0, size - 1, size);
 }
 
 /**
- * quick_sort_3070 - the real quick sort function
- * @arr: the array
- * @lb: lower bound (the min index)
- * @ub: upper bound (the max index)
- * --------------------------------------------
-*/
-void quick_sort_3070(int *arr, size_t lb, size_t ub)
+ * quick_sort_3070 - original function of quick sort
+ * @A: array received
+ * @lb: menor indice
+ * @up: mayor indice
+ * @size: size of array
+ */
+void quick_sort_3070(int *arr, int lb, int up, size_t size)
 {
-	size_t loc;
+	int p;
 
-	if (lb < ub)
+	if (lb < up)
 	{
-		loc = division(arr, lb, ub);
-		quick_sort_3070(arr, lb, loc - 1);
-		quick_sort_3070(arr, loc + 1, ub);
+		p = partition(arr, lb, up, size);
+		quick_sort_3070(arr, lb, p - 1, size);
+		quick_sort_3070(arr, p + 1, up, size);
 	}
 }
 
 /**
- * division - manages the array partitions
- * @arr: the array
- * @st: starting path index
- * @up: upper bound (last index)
- * ----------------------------------
- * Return: location of the pivot index
-*/
-size_t division(int *arr, size_t st, size_t up)
+ * partition - partition function
+ * @A: array received
+ * @lb: menor indice
+ * @up: mayor indice
+ * @size: size of array
+ * Return: i
+ */
+int partition(int *arr, int lb, int up, size_t size)
 {
-	int pivot, aux;
-	size_t ed = up;
+	int pivot, aux, j = lb, i = lb;
 
-	if (!arr)
-		return (-1);
-	pivot = arr[ed];
-	while (st < ed)
+	pivot = arr[up];
+	while (j <= up)
 	{
-
-		while (arr[st] <= pivot)
-			st++;
-		while (arr[ed] > pivot)
-			ed--;
-
-		if (st < ed)
+		if (arr[j] < pivot)
 		{
-			aux = arr[st];
-			arr[st] = arr[ed];
-			arr[ed] = aux;
-			print_array(arr, up);
+			aux = arr[j];
+			arr[j] = arr[i];
+			arr[i] = aux;
+			if (i != j)
+				print_array(arr, size);
+			i++;
 		}
+		j++;
 	}
-
-	aux = arr[ed];
-	arr[ed] = pivot;
+	aux = arr[i];
+	arr[i] = arr[up];
 	arr[up] = aux;
-	print_array(arr, up);
-
-	return (ed);
+	if (arr[up] != pivot)
+		print_array(arr, size);
+	return (i);
 }
-	
