@@ -11,7 +11,7 @@ void insertion_sort_list(listint_t **list)
 {
 	listint_t *cu, *cu_p;
 
-	if (!list)
+	if (!list || (!*list) || (!(*list)->next))
 		return;
 	cu = (*list)->next;
 	while (cu)
