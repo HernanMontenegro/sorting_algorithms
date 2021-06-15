@@ -16,19 +16,6 @@ typedef struct listint_s
 	struct listint_s *next;
 } listint_t;
 
-/**
- * struct listint_s - Doubly linked list node
- *
- * @n: Integer stored in the node
- * @prev: Pointer to the previous element of the list
- * @next: Pointer to the next element of the list
- */
-typedef struct indxlist_s
-{
-	int n;
-	struct indxlist_s *next;
-} indexlist_t;
-
 /* Std Libraries */
 #include <stdlib.h>
 #include <stddef.h>
